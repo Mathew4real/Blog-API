@@ -1,0 +1,666 @@
+openapi: 3.0.3
+info:
+  title: Blog API
+  version: 1.0.0
+  description: A simple REST API for managing blog posts, including creating, reading,
+    updating, and deleting posts. Supports categories, drafts, and user authentication.
+paths:
+  /api/v1/blog:
+    get:
+      operationId: api_v1_blog_list
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - ai
+          - books
+          - development
+          - education
+          - entrepreneurship
+          - finance
+          - gaming
+          - health
+          - movies
+          - news
+          - opinion
+          - productivity
+          - science
+          - technology
+          - travel
+          - tutorials
+        description: |-
+          * `technology` - Tecnologia
+          * `development` - Desenvolvimento
+          * `ai` - Inteligência Artificial
+          * `science` - Ciência
+          * `education` - Educação
+          * `tutorials` - Tutoriais
+          * `productivity` - Produtividade
+          * `gaming` - Games
+          * `movies` - Filmes e Séries
+          * `books` - Livros
+          * `health` - Saúde
+          * `travel` - Viagens
+          * `finance` - Finanças
+          * `entrepreneurship` - Empreendedorismo
+          * `news` - Notícias
+          * `opinion` - Opinião
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blog'
+          description: ''
+  /api/v1/create-blog:
+    post:
+      operationId: api_v1_create_blog_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Blog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Blog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Blog'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+          description: ''
+  /api/v1/delete_blog/{id}/:
+    get:
+      operationId: api_v1_delete_blog_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+          description: ''
+    delete:
+      operationId: api_v1_delete_blog_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/register/:
+    post:
+      operationId: api_v1_register_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegistration'
+          description: ''
+  /api/v1/update_blog/{id}/:
+    get:
+      operationId: api_v1_update_blog_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+          description: ''
+    put:
+      operationId: api_v1_update_blog_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Blog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Blog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Blog'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+          description: ''
+    patch:
+      operationId: api_v1_update_blog_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBlog'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBlog'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBlog'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+          description: ''
+  /api/v1/user_profile/{id}/:
+    get:
+      operationId: api_v1_user_profile_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserprofileUpdate'
+          description: ''
+    put:
+      operationId: api_v1_user_profile_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserprofileUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserprofileUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserprofileUpdate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserprofileUpdate'
+          description: ''
+    patch:
+      operationId: api_v1_user_profile_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserprofileUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserprofileUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserprofileUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserprofileUpdate'
+          description: ''
+  /token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+components:
+  schemas:
+    Blog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        content:
+          type: string
+        title:
+          type: string
+          maxLength: 200
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/BlogOWner'
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        update:
+          type: string
+          format: date-time
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        image:
+          type: string
+          format: uri
+          nullable: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - content
+      - created
+      - id
+      - owner
+      - title
+      - update
+    BlogOWner:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - username
+    CategoryEnum:
+      enum:
+      - technology
+      - development
+      - ai
+      - science
+      - education
+      - tutorials
+      - productivity
+      - gaming
+      - movies
+      - books
+      - health
+      - travel
+      - finance
+      - entrepreneurship
+      - news
+      - opinion
+      type: string
+      description: |-
+        * `technology` - Tecnologia
+        * `development` - Desenvolvimento
+        * `ai` - Inteligência Artificial
+        * `science` - Ciência
+        * `education` - Educação
+        * `tutorials` - Tutoriais
+        * `productivity` - Produtividade
+        * `gaming` - Games
+        * `movies` - Filmes e Séries
+        * `books` - Livros
+        * `health` - Saúde
+        * `travel` - Viagens
+        * `finance` - Finanças
+        * `entrepreneurship` - Empreendedorismo
+        * `news` - Notícias
+        * `opinion` - Opinião
+    PatchedBlog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        content:
+          type: string
+        title:
+          type: string
+          maxLength: 200
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/BlogOWner'
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        update:
+          type: string
+          format: date-time
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        image:
+          type: string
+          format: uri
+          nullable: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUserprofileUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        profile_pic:
+          type: string
+          format: uri
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+          maxLength: 300
+        facebook:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+        linkedin:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+        instagram:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+        github:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+        youtube:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    UserRegistration:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+          minLength: 6
+      required:
+      - password
+      - username
+    UserprofileUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        profile_pic:
+          type: string
+          format: uri
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+          maxLength: 300
+        facebook:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+        linkedin:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+        instagram:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+        github:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+        youtube:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 255
+      required:
+      - id
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
