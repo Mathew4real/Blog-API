@@ -2,6 +2,13 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from . models import *
 
+
+
+
+class UserprofileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["id","username","first_name","last_name","last_name","profile_pic","bio","facebook","linkedin","instagram","github","instagram","youtube"]
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -25,8 +32,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         new_user.set_password(password)
         new_user.save()
         return new_user
+    
+class BlogOWner(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["username","first_name","last_name"]
 class BlogSerializer (serializers.ModelSerializer):
+    owner = BlogOWner(read_only = True)
     class Meta:
         model = Blog
-        fields = "__all__"
-        
+        fields = ["id","content","title","owner","slug","update","category","image","created"]
+

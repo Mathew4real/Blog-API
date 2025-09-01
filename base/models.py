@@ -13,7 +13,7 @@ class User(AbstractUser):
     linkedin = models.URLField(max_length=255,blank=True,null=True)
     instagram = models.URLField(max_length=255,blank=True,null=True)
     github = models.URLField(max_length=255,blank=True,null=True)
-    
+    youtube = models.URLField(max_length=255,blank=True,null=True)
     def __str__(self):
         return self.username
     
@@ -44,7 +44,8 @@ class Blog(models.Model):
         created = models.DateTimeField(auto_now_add=True)
         update = models.DateTimeField(auto_now=True)
         is_draft = models.BooleanField(default=True)
-        choices = models.CharField(max_length=50,choices=Category.choices) 
+        category = models.CharField(max_length=50,choices=Category.choices)
+        image = models.ImageField(upload_to="blog_img",blank=True,null=True) 
 
         class Meta:
               ordering = ["-created"]
@@ -63,4 +64,6 @@ class Blog(models.Model):
 
             if not self.is_draft and self.created is None:
                 self.created = timezone.now()
+            super().save(*args, **kwargs) 
               
+
